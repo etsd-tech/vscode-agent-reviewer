@@ -1,0 +1,5 @@
+{
+  "name": "vscode-agent-review",
+  "private": true,
+  "workspaces": ["channel", "extension"]
+}
