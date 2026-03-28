@@ -15,7 +15,7 @@ Channels API.
 1. **Install the extension:**
 
    ```bash
-   cd extension && npm install && npm run compile
+   cd extension && pnpm install && pnpm run compile
    ```
 
    Then open VS Code and run `Developer: Install Extension from Location...`
