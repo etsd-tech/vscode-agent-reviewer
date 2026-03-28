@@ -1,9 +1,9 @@
 #!/bin/bash
 # Start server in background, POST a review, check it doesn't crash
 PORT=47199
-VSCODE_REVIEW_PORT=$PORT bun channel/server.ts &
+VSCODE_REVIEW_PORT=$PORT bun channel/server.ts 2>/dev/null &
 SERVER_PID=$!
-sleep 1
+sleep 2
 
 # POST a test review
 RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST http://127.0.0.1:$PORT/review \
