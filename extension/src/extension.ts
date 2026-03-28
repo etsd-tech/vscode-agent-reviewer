@@ -1,10 +1,19 @@
 import * as vscode from 'vscode';
 import { ReviewCommentController } from './commentController';
+import { submitReview } from './reviewSubmitter';
 
 let commentController: ReviewCommentController | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
   commentController = new ReviewCommentController(context);
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('vscodeReviewer.submitReview', () => {
+      if (commentController) {
+        submitReview(commentController);
+      }
+    })
+  );
 
   context.subscriptions.push(
     vscode.commands.registerCommand('vscodeReviewer.clearComments', () => {
