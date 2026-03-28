@@ -25,6 +25,10 @@
         "command": "vscodeReviewer.clearComments",
         "title": "Clear Review Comments",
         "icon": "$(trash)"
+      },
+      {
+        "command": "vscodeReviewer.createComment",
+        "title": "Add Comment"
       }
     ],
     "menus": {
@@ -36,6 +40,12 @@
         {
           "command": "vscodeReviewer.clearComments",
           "group": "navigation"
+        }
+      ],
+      "comments/commentThread/context": [
+        {
+          "command": "vscodeReviewer.createComment",
+          "group": "inline"
         }
       ]
     },
