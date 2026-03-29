@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const fs=require('fs');const f='/tmp/code-review-sessions.json';try{const s=JSON.parse(fs.readFileSync(f,'utf8'));const alive=s.filter(e=>{try{process.kill(e.pid,0);return true}catch{return false}});fs.writeFileSync(f,JSON.stringify(alive,null,2))}catch{}\""
+          }
+        ]
+      }
+    ]
+  }
+}

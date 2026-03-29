@@ -1,4 +1,8 @@
+.claude/
 node_modules/
 dist/
 *.vsix
+*.map
 .DS_Store
+bun.lock
+package-lock.json

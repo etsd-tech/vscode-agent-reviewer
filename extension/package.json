@@ -1,9 +1,16 @@
 {
-  "name": "vscode-agent-review",
-  "displayName": "Agent Review",
+  "name": "agent-code-reviewer",
+  "displayName": "Claude Code Reviewer",
   "description": "Native code review UI for Claude Code — annotate code and push feedback via channels",
   "version": "0.1.0",
   "publisher": "local",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/etsd-tech/vscode-agent-reviewer"
+  },
+  "keywords": ["claude", "claude-code", "code-review", "channels", "mcp"],
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -18,7 +25,7 @@
     "commands": [
       {
         "command": "vscodeReviewer.submitReview",
-        "title": "Submit Review",
+        "title": "Send Review to Claude Code",
         "icon": "$(send)"
       },
       {
@@ -29,6 +36,15 @@
       {
         "command": "vscodeReviewer.createComment",
         "title": "Add Comment"
+      },
+      {
+        "command": "vscodeReviewer.commentAndSubmit",
+        "title": "Comment & Send All to Claude Code",
+        "icon": "$(send)"
+      },
+      {
+        "command": "vscodeReviewer.showSessions",
+        "title": "Show Claude Code Sessions"
       }
     ],
     "menus": {
@@ -46,21 +62,26 @@
         {
           "command": "vscodeReviewer.createComment",
           "group": "inline"
+        },
+        {
+          "command": "vscodeReviewer.commentAndSubmit",
+          "group": "inline"
         }
       ]
     },
     "configuration": {
       "title": "Agent Review",
       "properties": {
-        "vscodeReviewer.port": {
+        "vscodeReviewer.basePort": {
           "type": "number",
           "default": 47123,
-          "description": "Port for the review channel server"
+          "description": "Starting port for session discovery scan"
         }
       }
     }
   },
   "scripts": {
+    "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "package": "vsce package"

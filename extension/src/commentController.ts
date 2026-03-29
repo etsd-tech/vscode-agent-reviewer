@@ -13,7 +13,7 @@ export class ReviewCommentController {
 
   constructor(context: vscode.ExtensionContext) {
     this.controller = vscode.comments.createCommentController(
-      'vscode-review',
+      'code-review',
       'Code Review'
     );
     this.controller.commentingRangeProvider = {
@@ -31,13 +31,13 @@ export class ReviewCommentController {
       vscode.commands.registerCommand(
         'vscodeReviewer.createComment',
         (reply: vscode.CommentReply) => {
-          this.createComment(reply);
+          this.addComment(reply);
         }
       )
     );
   }
 
-  private createComment(reply: vscode.CommentReply) {
+  addComment(reply: vscode.CommentReply) {
     const thread = reply.thread;
     const comment: vscode.Comment = {
       body: reply.text,

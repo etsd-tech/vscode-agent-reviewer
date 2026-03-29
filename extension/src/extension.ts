@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 import { ReviewCommentController } from './commentController';
 import { submitReview } from './reviewSubmitter';
-import { ensureChannelRegistered } from './channelInstaller';
+import { ensureClaudeProvisioned } from './claudeInstaller';
+import { createStatusBar } from './statusBar';
 
 let commentController: ReviewCommentController | undefined;
 
@@ -9,10 +10,12 @@ export function activate(context: vscode.ExtensionContext) {
   commentController = new ReviewCommentController(context);
 
   try {
-    ensureChannelRegistered(context.extensionPath);
+    ensureClaudeProvisioned(context.extensionPath);
   } catch (err) {
-    console.warn('Failed to register channel server:', err);
+    console.warn('Failed to provision Claude Code integration:', err);
   }
+
+  createStatusBar(context);
 
   context.subscriptions.push(
     vscode.commands.registerCommand('vscodeReviewer.submitReview', () => {
@@ -20,6 +23,18 @@ export function activate(context: vscode.ExtensionContext) {
         submitReview(commentController);
       }
     })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'vscodeReviewer.commentAndSubmit',
+      (reply: vscode.CommentReply) => {
+        if (commentController) {
+          commentController.addComment(reply);
+          submitReview(commentController);
+        }
+      },
+    ),
   );
 
   context.subscriptions.push(

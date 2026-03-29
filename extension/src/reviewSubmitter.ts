@@ -4,6 +4,8 @@ import type { IncomingMessage } from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ReviewComment, ReviewCommentController } from './commentController';
+import { Session, discoverSessions } from './sessionRegistry';
+import { formatSessionItems } from './sessionPicker';
 
 const CONTEXT_LINES = 2;
 
@@ -100,6 +102,27 @@ function postReview(port: number, body: string): Promise<void> {
   });
 }
 
+async function selectSession(): Promise<Session | undefined> {
+  const sessions = await discoverSessions();
+
+  if (sessions.length === 0) {
+    vscode.window.showErrorMessage(
+      'No Claude Code sessions found. Start Claude Code with: claude --dangerously-load-development-channels server:code-review'
+    );
+    return undefined;
+  }
+
+  if (sessions.length === 1) {
+    return sessions[0];
+  }
+
+  const picked = await vscode.window.showQuickPick(formatSessionItems(sessions), {
+    placeHolder: 'Select Claude Code session',
+  });
+
+  return picked?.session;
+}
+
 export async function submitReview(
   commentController: ReviewCommentController
 ): Promise<void> {
@@ -109,25 +132,21 @@ export async function submitReview(
     return;
   }
 
+  const session = await selectSession();
+  if (!session) return;
+
   const workspaceFolders = vscode.workspace.workspaceFolders;
   const workspaceRoot = workspaceFolders?.[0]?.uri.fsPath ?? '/';
-
-  const config = vscode.workspace.getConfiguration('vscodeReviewer');
-  const port = config.get<number>('port', 47123);
 
   const body = formatReview(comments, workspaceRoot);
 
   try {
-    await postReview(port, body);
+    await postReview(session.port, body);
     commentController.clearAll();
     vscode.window.showInformationMessage(
       `Review submitted (${comments.length} comment${comments.length > 1 ? 's' : ''}).`
     );
   } catch (err) {
-    const msg =
-      err instanceof Error && err.message.includes('ECONNREFUSED')
-        ? 'Channel server not running. Start Claude Code with: claude --dangerously-load-development-channels server:vscode-review'
-        : `Failed to submit review: ${err}`;
-    vscode.window.showErrorMessage(msg);
+    vscode.window.showErrorMessage(`Failed to submit review: ${err}`);
   }
 }

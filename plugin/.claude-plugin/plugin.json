@@ -1,0 +1,9 @@
+{
+  "name": "code-review",
+  "description": "Push code review feedback from VS Code into your Claude Code session",
+  "version": "0.1.0",
+  "author": {
+    "name": "Elie Teyssedou"
+  },
+  "repository": "https://github.com/etsd-tech/vscode-agent-reviewer"
+}
