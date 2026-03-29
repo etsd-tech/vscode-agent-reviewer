@@ -11,7 +11,7 @@
 
 Native code review UI for Claude Code. Annotate code in VS Code and push line-level feedback directly into a running Claude Code session via the Channels API.
 
-<video src="https://github.com/etsd-tech/vscode-agent-reviewer/raw/master/docs/demo.mp4" controls width="100%"></video>
+https://github.com/user-attachments/assets/5da53d8c-51b9-4686-ae5e-00f75b11437c
 
 ## How it works
 
