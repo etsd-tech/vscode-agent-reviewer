@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/banner.png" alt="Claude Code Reviewer" width="400" />
+  <img src="https://raw.githubusercontent.com/etsd-tech/vscode-agent-reviewer/master/docs/banner.png" alt="Claude Code Reviewer" width="400" />
 </p>
 
 # Claude Code Reviewer
