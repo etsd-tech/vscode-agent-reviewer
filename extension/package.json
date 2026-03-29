@@ -1,6 +1,6 @@
 {
   "name": "agent-code-reviewer",
-  "displayName": "Claude Code Reviewer",
+  "displayName": "Code Review for Claude Code",
   "description": "Native code review UI for Claude Code — annotate code and push feedback via channels",
   "version": "0.1.0",
   "publisher": "ETSD",
