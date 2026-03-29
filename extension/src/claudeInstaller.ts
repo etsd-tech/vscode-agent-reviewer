@@ -13,9 +13,9 @@ const HOOK_COMMAND =
   'fs.writeFileSync(f,JSON.stringify(alive,null,2))}catch{}"';
 
 function resolveServerPath(extensionPath: string): string {
-  const bundled = path.join(extensionPath, 'channel', 'server.ts');
+  const bundled = path.join(extensionPath, 'channel', 'server.js');
   if (fs.existsSync(bundled)) return bundled;
-  return path.join(extensionPath, '..', 'plugin', 'channel', 'server.ts');
+  return path.join(extensionPath, '..', 'plugin', 'channel', 'server.js');
 }
 
 function resolveCommandSource(extensionPath: string): string | null {
@@ -40,13 +40,13 @@ function installMcpServer(serverPath: string): void {
     | undefined;
 
   if (
-    existing?.command === 'bun' &&
+    existing?.command === 'node' &&
     JSON.stringify(existing.args) === JSON.stringify([serverPath])
   ) {
     return;
   }
 
-  mcpServers[SERVER_NAME] = { command: 'bun', args: [serverPath] };
+  mcpServers[SERVER_NAME] = { command: 'node', args: [serverPath] };
   config.mcpServers = mcpServers;
   fs.writeFileSync(CLAUDE_CONFIG, JSON.stringify(config, null, 2) + '\n');
 }

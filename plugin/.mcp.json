@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "code-review": {
-      "command": "bun",
-      "args": ["channel/server.ts"]
+      "command": "node",
+      "args": ["channel/server.js"]
     }
   }
 }

@@ -17,11 +17,11 @@ The extension auto-provisions the Claude Code integration on activation (MCP ser
 
 > **Channels are experimental.** This extension relies on the Claude Code [Channels API](https://code.claude.com/docs/en/channels-reference), which is in research preview. Claude Code must be launched with the `--dangerously-load-development-channels` flag to enable custom channels. This flag requirement will go away once Anthropic approves the channel (via marketplace review or org `allowedChannelPlugins`). The VS Code extension handles all setup — there is no separate Claude Code plugin to install.
 
-## Prerequisites
+## Requirements
 
-- [Bun](https://bun.sh) installed
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) v2.1.80+
-- `claude.ai` login (API key auth is not supported for channels)
+
+> Note: Channels require a `claude.ai` login. API key and Anthropic Console authentication do not support channels.
 
 ## Quick Install
 
@@ -35,7 +35,7 @@ The extension auto-provisions the Claude Code integration on activation (MCP ser
    Or from the command line:
 
    ```bash
-   code --install-extension etsd-tech.agent-code-reviewer
+   code --install-extension ETSD.agent-code-reviewer
    ```
 
 2. Start Claude Code with the review channel enabled:
@@ -57,10 +57,10 @@ git clone https://github.com/etsd-tech/vscode-agent-reviewer.git
 cd vscode-agent-reviewer
 
 # Install channel server dependencies
-cd plugin/channel && bun install && cd ../..
+cd plugin/channel && npm install && cd ../..
 
 # Build and launch the extension
-cd extension && pnpm install && pnpm run compile
+cd extension && npm install && npm run compile
 code --extensionDevelopmentPath=$(pwd)
 ```
 
@@ -121,6 +121,5 @@ Each channel server writes its entry (port, PID, cwd, name, start time) to `/tmp
 
 - Channels API is in research preview (Claude Code v2.1.80+)
 - Requires `claude.ai` login (not API key / Console auth)
-- Requires Bun for the channel server
 - Team/Enterprise orgs must enable `channelsEnabled` in managed settings
 - Development channels require `--dangerously-load-development-channels` until submitted to the Anthropic marketplace

@@ -3,7 +3,7 @@
   "displayName": "Claude Code Reviewer",
   "description": "Native code review UI for Claude Code — annotate code and push feedback via channels",
   "version": "0.1.0",
-  "publisher": "local",
+  "publisher": "ETSD",
   "license": "MIT",
   "repository": {
     "type": "git",
