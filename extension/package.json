@@ -84,7 +84,8 @@
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "package": "vsce package"
+    "package": "vsce package",
+    "publish": "vsce publish -p $VSCE_PAT"
   },
   "devDependencies": {
     "@types/node": "^25.5.0",
