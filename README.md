@@ -30,18 +30,11 @@ The extension auto-provisions the Claude Code integration on activation (MCP ser
 
 ## Quick Install
 
-1. Install **Claude Code Reviewer** from the VS Code Marketplace:
+1. Install the extension:
 
-   - Open VS Code
-   - Go to Extensions (`Cmd+Shift+X`)
-   - Search for **"Claude Code Reviewer"**
-   - Click **Install**
+   <a href="vscode:extension/ETSD.agent-code-reviewer"><img src="https://img.shields.io/badge/Install%20in-VS%20Code-007ACC?logo=visual-studio-code&logoColor=white" alt="Install in VS Code" /></a>
 
-   Or from the command line:
-
-   ```bash
-   code --install-extension ETSD.agent-code-reviewer
-   ```
+   Or from the command line: `code --install-extension ETSD.agent-code-reviewer`
 
 2. Start Claude Code with the review channel enabled:
 
