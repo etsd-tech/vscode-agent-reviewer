@@ -2,7 +2,7 @@
   "name": "agent-code-reviewer",
   "displayName": "Code Review for Claude Code",
   "description": "Native code review UI for Claude Code — annotate code and push feedback via channels",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "ETSD",
   "license": "MIT",
   "repository": {
@@ -31,7 +31,7 @@
       {
         "command": "vscodeReviewer.clearComments",
         "title": "Clear Review Comments",
-        "icon": "$(trash)"
+        "icon": "$(clear-all)"
       },
       {
         "command": "vscodeReviewer.createComment",
@@ -39,12 +39,22 @@
       },
       {
         "command": "vscodeReviewer.commentAndSubmit",
-        "title": "Comment & Send All to Claude Code",
+        "title": "Comment & Send All",
         "icon": "$(send)"
       },
       {
         "command": "vscodeReviewer.showSessions",
         "title": "Show Claude Code Sessions"
+      },
+      {
+        "command": "vscodeReviewer.addGeneralComment",
+        "title": "Add General Comment",
+        "icon": "$(note)"
+      },
+      {
+        "command": "vscodeReviewer.deleteComment",
+        "title": "Delete Comment",
+        "icon": "$(close)"
       }
     ],
     "menus": {
@@ -60,12 +70,19 @@
       ],
       "comments/commentThread/context": [
         {
-          "command": "vscodeReviewer.createComment",
+          "command": "vscodeReviewer.commentAndSubmit",
           "group": "inline"
         },
         {
-          "command": "vscodeReviewer.commentAndSubmit",
+          "command": "vscodeReviewer.createComment",
           "group": "inline"
+        }
+      ],
+      "comments/comment/context": [
+        {
+          "command": "vscodeReviewer.deleteComment",
+          "group": "inline",
+          "when": "comment == canDelete"
         }
       ]
     },
@@ -85,6 +102,7 @@
     "bundle-plugin": "node scripts/bundle-plugin.js",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
+    "local": "npx vsce package --no-dependencies -o /tmp/agent-review.vsix && code --install-extension /tmp/agent-review.vsix --force",
     "package": "vsce package",
     "publish": "vsce publish -p $VSCE_PAT"
   },

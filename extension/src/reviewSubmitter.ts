@@ -17,27 +17,39 @@ function readFileLines(filePath: string): string[] | null {
   }
 }
 
+const LANG_MAP: Record<string, string> = {
+  ts: 'ts', tsx: 'tsx', js: 'js', jsx: 'jsx',
+  py: 'python', rs: 'rust', go: 'go', java: 'java',
+  rb: 'ruby', c: 'c', cpp: 'cpp', h: 'c', hpp: 'cpp',
+  css: 'css', html: 'html', json: 'json', yaml: 'yaml',
+  yml: 'yaml', md: 'markdown', sh: 'bash', zsh: 'bash',
+};
+
 function detectLanguage(filePath: string): string {
-  const ext = path.extname(filePath).slice(1);
-  const map: Record<string, string> = {
-    ts: 'ts', tsx: 'tsx', js: 'js', jsx: 'jsx',
-    py: 'python', rs: 'rust', go: 'go', java: 'java',
-    rb: 'ruby', c: 'c', cpp: 'cpp', h: 'c', hpp: 'cpp',
-    css: 'css', html: 'html', json: 'json', yaml: 'yaml',
-    yml: 'yaml', md: 'markdown', sh: 'bash', zsh: 'bash',
-  };
-  return map[ext] ?? '';
+  return LANG_MAP[path.extname(filePath).slice(1)] ?? '';
 }
 
 function formatReview(comments: ReviewComment[], workspaceRoot: string): string {
+  const general: ReviewComment[] = [];
   const byFile = new Map<string, ReviewComment[]>();
   for (const c of comments) {
-    const existing = byFile.get(c.filePath) ?? [];
-    existing.push(c);
-    byFile.set(c.filePath, existing);
+    if (!c.filePath) {
+      general.push(c);
+    } else {
+      const existing = byFile.get(c.filePath) ?? [];
+      existing.push(c);
+      byFile.set(c.filePath, existing);
+    }
   }
 
   const sections: string[] = ['# Code Review\n'];
+
+  if (general.length > 0) {
+    sections.push('## General\n');
+    for (const c of general) {
+      sections.push(`- ${c.body}\n`);
+    }
+  }
 
   for (const [filePath, fileComments] of byFile) {
     const relativePath = path.relative(workspaceRoot, filePath);
@@ -87,6 +99,7 @@ function postReview(port: number, body: string): Promise<void> {
         headers: { 'Content-Type': 'text/plain; charset=utf-8' },
       },
       (res: IncomingMessage) => {
+        res.resume();
         if (res.statusCode === 200) {
           resolve();
         } else {
@@ -102,7 +115,7 @@ function postReview(port: number, body: string): Promise<void> {
   });
 }
 
-async function selectSession(): Promise<Session | undefined> {
+async function selectSession(context: vscode.ExtensionContext): Promise<Session | undefined> {
   const sessions = await discoverSessions();
 
   if (sessions.length === 0) {
@@ -116,6 +129,14 @@ async function selectSession(): Promise<Session | undefined> {
     return sessions[0];
   }
 
+  const lastPort = context.workspaceState.get<number>('lastSessionPort');
+  if (lastPort !== undefined) {
+    const idx = sessions.findIndex((s) => s.port === lastPort);
+    if (idx > 0) {
+      sessions.unshift(sessions.splice(idx, 1)[0]);
+    }
+  }
+
   const picked = await vscode.window.showQuickPick(formatSessionItems(sessions), {
     placeHolder: 'Select Claude Code session',
   });
@@ -124,7 +145,8 @@ async function selectSession(): Promise<Session | undefined> {
 }
 
 export async function submitReview(
-  commentController: ReviewCommentController
+  commentController: ReviewCommentController,
+  context: vscode.ExtensionContext
 ): Promise<void> {
   const comments = commentController.getAllComments();
   if (comments.length === 0) {
@@ -132,7 +154,7 @@ export async function submitReview(
     return;
   }
 
-  const session = await selectSession();
+  const session = await selectSession(context);
   if (!session) return;
 
   const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -142,6 +164,7 @@ export async function submitReview(
 
   try {
     await postReview(session.port, body);
+    context.workspaceState.update('lastSessionPort', session.port);
     commentController.clearAll();
     vscode.window.showInformationMessage(
       `Review submitted (${comments.length} comment${comments.length > 1 ? 's' : ''}).`
