@@ -1,8 +1,13 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/etsd-tech/vscode-agent-reviewer/master/docs/banner.png" alt="Claude Code Reviewer" width="400" />
+  <img src="https://raw.githubusercontent.com/etsd-tech/vscode-agent-reviewer/master/docs/banner.png" alt="Code Review for Claude Code" width="400" />
 </p>
 
-# Claude Code Reviewer
+<p align="center">
+  <a href="vscode:extension/ETSD.agent-code-reviewer"><img src="https://img.shields.io/badge/Install%20in-VS%20Code-007ACC?logo=visual-studio-code&logoColor=white&style=for-the-badge" alt="Install in VS Code" /></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=ETSD.agent-code-reviewer"><img src="https://img.shields.io/visual-studio-marketplace/v/ETSD.agent-code-reviewer?style=for-the-badge&label=version" alt="Version" /></a>
+</p>
+
+# Code Review for Claude Code
 
 Native code review UI for Claude Code. Annotate code in VS Code and push line-level feedback directly into a running Claude Code session via the Channels API.
 
