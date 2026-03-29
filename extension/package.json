@@ -2,7 +2,7 @@
   "name": "agent-code-reviewer",
   "displayName": "Code Review for Claude Code",
   "description": "Native code review UI for Claude Code — annotate code and push feedback via channels",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "ETSD",
   "license": "MIT",
   "repository": {
@@ -81,7 +81,8 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "tsc -p ./",
+    "vscode:prepublish": "npm run bundle-plugin && tsc -p ./",
+    "bundle-plugin": "node scripts/bundle-plugin.js",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "package": "vsce package",

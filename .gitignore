@@ -2,6 +2,8 @@
 docs/superpowers/
 node_modules/
 dist/
+extension/channel/
+extension/commands/
 *.vsix
 *.map
 .DS_Store

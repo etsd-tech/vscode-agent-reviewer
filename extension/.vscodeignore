@@ -1,6 +1,8 @@
 src/**
+scripts/**
 tsconfig.json
 node_modules/**
+!channel/node_modules/**
 *.map
 *.vsix
 .vscode/**
